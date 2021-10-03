@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Check register page">
+    <test name="Check all links in loop for status code">
+        <classes>
+            <class name="specs.CheckLinks"></class>
+        </classes>
+    </test>
+    <test name="Check every input independently and save screenshot">
+        <classes>
+            <class name="specs.CheckInputsIndependently"></class>
+        </classes>
+    </test>
+    <test name="Check every input independently with excel data and save screenshot">
+        <classes>
+            <class name="specs.CheckInputsIndependentlyWithExcel"></class>
+        </classes>
+    </test>
+    <test name="Check all inputs at once and try to sign in">
+        <classes>
+            <class name="specs.CheckInputsAtOnce"></class>
+        </classes>
+    </test>
+</suite>

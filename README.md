@@ -5,7 +5,8 @@
 2) Install Java;
 3) Install IntelliJ IDEA;
 4) Go to pom.xml and install dependencies;
-5) Click to run button to run all tests;
+5) Edit pom.xml configuration like TestNG, Test = kind suite, Suite = path to pom.xml
+6) Click to run button to run all tests;
 
 # First test
 Get all links and check status code in loop;

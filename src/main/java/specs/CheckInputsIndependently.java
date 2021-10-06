@@ -3,6 +3,8 @@ package specs;
 import helpers.Screenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import pages.RegisterPage;
@@ -10,7 +12,7 @@ import pages.RegisterPage;
 import java.io.File;
 import java.time.Duration;
 
-public class CheckInputsIndependently extends RegisterPage {
+public class CheckInputsIndependently  {
     String driverPath = new File("browser/chromedriver.exe").getAbsolutePath();
     WebDriver driver;
     RegisterPage registerPage;
@@ -23,70 +25,100 @@ public class CheckInputsIndependently extends RegisterPage {
 
         driver = new ChromeDriver();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-
-        driver.get(super.registerUrl);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+        registerPage = new RegisterPage(driver);
+        driver.get(registerPage.registerUrl);
         driver.manage().window().maximize();
     }
 
-
-
     @Test
-    public void CheckInputsIndependently()  {
-        try {
-            registerPage = new RegisterPage(driver);
-            screenshot = new Screenshot(driver);
+    public void checkUserInput() throws Exception {
+        registerPage = new RegisterPage(driver);
+        screenshot = new Screenshot(driver);
 
-            registerPage.typeAndSendInput(registerPage.userInput,"blabla");
-            registerPage.compareLabelAndInput(registerPage.userLabel);
-            registerPage.checkForExistErrorMsg(registerPage.userLabel);
-            screenshot.doScreenshot(driver,"userInput");
-            registerPage.userInput.clear();
-            registerPage.typeAndSendInput(registerPage.userEmailInput,"das12dss@gmail.com");
-            registerPage.compareLabelAndInput(registerPage.userEmailLabel);
-            registerPage.checkForExistErrorMsg(registerPage.userEmailLabel);
-            screenshot.doScreenshot(driver,"userEmailInput");
-            registerPage.userEmailInput.clear();
-            registerPage.typeAndSendInput(registerPage.userPasswordInput,"qwerty228");
-            registerPage.compareLabelAndInput(registerPage.userPasswordLabel);
-            registerPage.checkForExistErrorMsg(registerPage.userPasswordLabel);
-            screenshot.doScreenshot(driver,"userPasswordInput");
-            registerPage.userPasswordInput.clear();
-            registerPage.typeAndSendInput(registerPage.userPasswordConfirmationInput,"qwerty228");
-            registerPage.compareLabelAndInput(registerPage.userPasswordConfirmationLabel);
-            registerPage.checkForExistErrorMsg(registerPage.userPasswordConfirmationLabel);
-            screenshot.doScreenshot(driver,"userPasswordConfirmationInput");
-            registerPage.userPasswordConfirmationInput.clear();
-            registerPage.typeAndSendInput(registerPage.userFirstNameInput,"Json");
-            registerPage.compareLabelAndInput(registerPage.userFirstNameLabel);
-            registerPage.checkForExistErrorMsg(registerPage.userFirstNameLabel);
-            screenshot.doScreenshot(driver,"userFirstNameInput");
-            registerPage.userFirstNameInput.clear();
-            registerPage.typeAndSendInput(registerPage.userLastNameInput,"Statham");
-            registerPage.compareLabelAndInput(registerPage.userLastNameLabel);
-            registerPage.checkForExistErrorMsg(registerPage.userLastNameLabel);
-            screenshot.doScreenshot(driver,"userLastNameInput");
-            registerPage.userLastNameInput.clear();
-            registerPage.typeAndSendInput(registerPage.userIrcNickInput,"Gai Richi");
-            registerPage.compareLabelAndInput(registerPage.userIrcNickLabel);
-            registerPage.checkForExistErrorMsg(registerPage.userIrcNickLabel);
-            screenshot.doScreenshot(driver,"userIrcNickInput");
-            registerPage.userIrcNickInput.clear();
-            registerPage.typeAndSendInput(registerPage.searchInput,"blablabla");
-            driver.getTitle().contains("blablabla");
-            screenshot.doScreenshot(driver,"searchInput");
-            driver.navigate().back();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            driver.quit();
-        }
+        registerPage.typeAndSendInput(registerPage.userInput,"w");
+        registerPage.compareLabelAndInput(registerPage.userLabel);
+        registerPage.checkForExistErrorMsg(registerPage.userLabel);
+        screenshot.doScreenshot(driver,"userInput");
+        registerPage.softassert.assertAll();
+        registerPage.userInput.clear();
+    }
+    @Test
+    public void checkUserEmailInput() throws Exception {
+        registerPage = new RegisterPage(driver);
+        screenshot = new Screenshot(driver);
 
+        registerPage.typeAndSendInput(registerPage.userEmailInput,"w");
+        registerPage.compareLabelAndInput(registerPage.userEmailLabel);
+        registerPage.checkForExistErrorMsg(registerPage.userEmailLabel);
+        screenshot.doScreenshot(driver,"userEmailInput");
+        registerPage.softassert.assertAll();
+        registerPage.userEmailInput.clear();
+    }
+    @Test
+    public void checkUserPasswordInput() throws Exception {
+        registerPage = new RegisterPage(driver);
+        screenshot = new Screenshot(driver);
+
+        registerPage.typeAndSendInput(registerPage.userPasswordInput,"w");
+        registerPage.compareLabelAndInput(registerPage.userPasswordLabel);
+        registerPage.checkForExistErrorMsg(registerPage.userPasswordLabel);
+        screenshot.doScreenshot(driver,"userPasswordInput");
+        registerPage.softassert.assertAll();
+        registerPage.userPasswordInput.clear();
+    }
+    @Test
+    public void checkUserPasswordConfirmationInput() throws Exception {
+        registerPage = new RegisterPage(driver);
+        screenshot = new Screenshot(driver);
+
+        registerPage.typeAndSendInput(registerPage.userPasswordConfirmationInput,"w");
+        registerPage.compareLabelAndInput(registerPage.userPasswordConfirmationLabel);
+        registerPage.checkForExistErrorMsg(registerPage.userPasswordConfirmationLabel);
+        screenshot.doScreenshot(driver,"userPasswordConfirmationLabel");
+        registerPage.softassert.assertAll();
+        registerPage.userPasswordConfirmationInput.clear();
+    }
+    @Test
+    public void checkUserFirstNameInput() throws Exception {
+        registerPage = new RegisterPage(driver);
+        screenshot = new Screenshot(driver);
+
+        registerPage.typeAndSendInput(registerPage.userFirstNameInput,"w");
+        registerPage.compareLabelAndInput(registerPage.userFirstNameLabel);
+        registerPage.checkForExistErrorMsg(registerPage.userFirstNameLabel);
+        screenshot.doScreenshot(driver,"userFirstNameInput");
+        registerPage.softassert.assertAll();
+        registerPage.userFirstNameInput.clear();
+    }
+    @Test
+    public void checkUserLastNameInput() throws Exception {
+        registerPage = new RegisterPage(driver);
+        screenshot = new Screenshot(driver);
+
+        registerPage.typeAndSendInput(registerPage.userLastNameInput,"w");
+        registerPage.compareLabelAndInput(registerPage.userLastNameLabel);
+        registerPage.checkForExistErrorMsg(registerPage.userLastNameLabel);
+        screenshot.doScreenshot(driver,"userLastNameLabel");
+        registerPage.softassert.assertAll();
+        registerPage.userLastNameInput.clear();
+    }
+    @Test
+    public void checkSearchInput() throws Exception {
+        registerPage = new RegisterPage(driver);
+        screenshot = new Screenshot(driver);
+
+        registerPage.typeAndSendInput(registerPage.searchInput,registerPage.searchValueForCheck);
+        Assert.assertTrue(driver.getCurrentUrl().contains(registerPage.searchValueForCheck));
+        screenshot.doScreenshot(driver,"searchInput");
+        registerPage.softassert.assertAll();
+        driver.navigate().back();
     }
 
-
+    @AfterTest
+    public void afterTest() {
+        driver.quit();
+    }
 
 }
 

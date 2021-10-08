@@ -4,9 +4,8 @@ import helpers.DataExtractor;
 import helpers.Screenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.Assert;
+import org.testng.annotations.*;
 import pages.RegisterPage;
 
 import java.io.File;
@@ -19,140 +18,101 @@ public class CheckInputsIndependentlyWithExcel {
     RegisterPage registerPage;
     Screenshot screenshot;
     DataExtractor exel;
+    ArrayList<String> user;
 
-    @BeforeTest
+    @BeforeClass
     public void setup() {
 
         System.setProperty("webdriver.chrome.driver", driverPath);
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
         registerPage = new RegisterPage(driver);
-        driver.get(registerPage.registerUrl);
+        driver.get(registerPage.getRegisterUrl());
         driver.manage().window().maximize();
-
+        screenshot = new Screenshot(driver);
         exel = new DataExtractor();
         exel.createResultStyleSheet();
+        user = exel.getDataForSimpleCheck(1);
     }
 
     @Test
     public void checkUserInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        exel = new DataExtractor();
-        screenshot = new Screenshot(driver);
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
 
-        registerPage.typeAndSendInput(registerPage.userInput, user.get(0));
-        exel.insertResult(registerPage.getUserLabelText(), registerPage.compareLabelAndInput(registerPage.userLabel));
-        registerPage.checkForExistErrorMsg(registerPage.userLabel);
-        screenshot.doScreenshot(driver, "userInput" + "Excel");
-        registerPage.userInput.clear();
-        registerPage.softassert.assertAll();
+        registerPage.setUserInput(user.get(0));
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userInput"+"Excel");
+        exel.insertResult(registerPage.getUserLabelText(), registerPage.compareLabelAndInput(registerPage.getUserLabel()));
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getUserErrorPath()),"User error is displayed");
     }
 
     @Test
     public void checkUserEmailInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-        exel = new DataExtractor();
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
-
-
-        registerPage.typeAndSendInput(registerPage.userEmailInput, user.get(1));
-        exel.insertResult(registerPage.getEmailLabelText(), registerPage.compareLabelAndInput(registerPage.userEmailLabel));
-        registerPage.checkForExistErrorMsg(registerPage.userEmailLabel);
-        screenshot.doScreenshot(driver, "userEmailInput" + "Excel");
-        registerPage.userEmailInput.clear();
-        registerPage.softassert.assertAll();
+        registerPage.setUserEmailInput(user.get(1));
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userEmailInput"+"Excel");
+        exel.insertResult(registerPage.getEmailLabelText(), registerPage.compareLabelAndInput(registerPage.getUserEmailLabel()));
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getEmailErrorPath()),"Email error is displayed");
     }
 
     @Test
     public void checkUserPasswordInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-        exel = new DataExtractor();
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
-
-        registerPage.typeAndSendInput(registerPage.userPasswordInput, user.get(2));
-        exel.insertResult(registerPage.getUserPasswordLabelText(), registerPage.compareLabelAndInput(registerPage.userPasswordLabel));
-        registerPage.checkForExistErrorMsg(registerPage.userPasswordLabel);
-        screenshot.doScreenshot(driver, "userPasswordInput" + "Excel");
-        registerPage.userPasswordInput.clear();
-        registerPage.softassert.assertAll();
+        registerPage.setUserPasswordInput(user.get(2));
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userPasswordInput"+"Excel");
+        exel.insertResult(registerPage.getUserPasswordLabelText(), registerPage.compareLabelAndInput(registerPage.getUserPasswordLabel()));
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getPasswordErrorPath()),"Password error is displayed");
     }
 
     @Test
     public void checkUserPasswordConfirmationInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-        exel = new DataExtractor();
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
-
-        registerPage.typeAndSendInput(registerPage.userPasswordConfirmationInput, user.get(3));
-        exel.insertResult(registerPage.getUserPasswordConfirmationLabelText(), registerPage.compareLabelAndInput(registerPage.userPasswordConfirmationLabel));
-        registerPage.checkForExistErrorMsg(registerPage.userPasswordConfirmationLabel);
-        screenshot.doScreenshot(driver, "userPasswordConfirmationLabel" + "Excel");
-        registerPage.userPasswordConfirmationInput.clear();
-        registerPage.softassert.assertAll();
+        registerPage.setUserPasswordConfirmationInput(user.get(3));
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userPasswordConfirmationInput"+"Excel");
+        exel.insertResult(registerPage.getUserPasswordConfirmationLabelText(), registerPage.compareLabelAndInput(registerPage.getUserPasswordConfirmationLabel()));
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getPasswordConfirmErrorPath()),"Password confirmation error is displayed");
     }
 
     @Test
     public void checkUserFirstNameInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-        exel = new DataExtractor();
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
-
-        registerPage.typeAndSendInput(registerPage.userFirstNameInput, user.get(4));
-        exel.insertResult(registerPage.getFirstNameLabelText(), registerPage.compareLabelAndInput(registerPage.userFirstNameLabel));
-        registerPage.checkForExistErrorMsg(registerPage.userFirstNameLabel);
-        screenshot.doScreenshot(driver, "userFirstNameInput" + "Excel");
-        registerPage.userFirstNameInput.clear();
-        registerPage.softassert.assertAll();
+        registerPage.setUserFirstNameInput(user.get(4));
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userFirstNameInput"+"Excel");
+        exel.insertResult(registerPage.getFirstNameLabelText(), registerPage.compareLabelAndInput(registerPage.getUserFirstNameLabel()));
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getFirstNameErrorPath()),"Firstname error is displayed");
     }
 
     @Test
     public void checkUserLastNameInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-        exel = new DataExtractor();
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
-
-        registerPage.typeAndSendInput(registerPage.userLastNameInput, user.get(5));
-        exel.insertResult(registerPage.getLastNameLabelText(), registerPage.compareLabelAndInput(registerPage.userLastNameLabel));
-        registerPage.checkForExistErrorMsg(registerPage.userLastNameLabel);
-        screenshot.doScreenshot(driver, "userLastNameLabel" + "Excel");
-        registerPage.userLastNameInput.clear();
-        registerPage.softassert.assertAll();
+        registerPage.setUserLastNameInput(user.get(5));
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userLastNameLabel"+"Excel");
+        exel.insertResult(registerPage.getLastNameLabelText(), registerPage.compareLabelAndInput(registerPage.getUserLastNameLabel()));
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getLastNameErrorPath()),"Lastname error is displayed");;
     }
     @Test
     public void checkIrcNickInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-        exel = new DataExtractor();
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
 
-        registerPage.typeAndSendInput(registerPage.userIrcNickInput, user.get(6));
-        exel.insertResult(registerPage.getIrcNickLabelText(), registerPage.compareLabelAndInput(registerPage.userIrcNickLabel));
-        registerPage.checkForExistErrorMsg(registerPage.userIrcNickLabel);
+
+        registerPage.setUserIrcNickInput(user.get(6));
+        registerPage.clickSubmitFormInput();
         screenshot.doScreenshot(driver, "userIrcNickLabel" + "Excel");
-        registerPage.userIrcNickInput.clear();
-        registerPage.softassert.assertAll();
+        exel.insertResult(registerPage.getIrcNickLabelText(), registerPage.compareLabelAndInput(registerPage.getUserIrcNickLabel()));
     }
 
     @Test
     public void checkSearchInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-        exel = new DataExtractor();
-        ArrayList<String> user = exel.getDataForSimpleCheck(1);
 
-        registerPage.typeAndSendInput(registerPage.searchInput, user.get(7));
-        exel.insertResult(registerPage.getSearchInputValue(), String.valueOf(registerPage.getSearchInputAfterQueryText().contains(user.get(7))) == "ЛОЖЬ" ? "failed" : "passed");
-        registerPage.softassert.assertTrue(driver.getCurrentUrl().contains(user.get(7)));
-        screenshot.doScreenshot(driver, "searchInput" + "Excel");
-        driver.navigate().back();
-        registerPage.softassert.assertAll();
+        registerPage.setSearchInput(user.get(7));
+        registerPage.clickSearchLink();
+        screenshot.doScreenshot(driver,"searchInput" + "Excel");
+        Assert.assertTrue(driver.getCurrentUrl().contains(user.get(7)),"Current url doesn't contain searched value");
     }
+    @AfterMethod
+    public void afterMethod() {
+        registerPage.clickRegisterLink();
+    }
+
+
 
     @AfterTest
     public void afterTest() {

@@ -4,10 +4,8 @@ import helpers.DataExtractor;
 import helpers.Screenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.Assert;
+import org.testng.annotations.*;
 import pages.RegisterPage;
 
 import java.io.File;
@@ -19,7 +17,7 @@ public class CheckInputsAtOnce {
     RegisterPage registerPage;
     Screenshot screenshot;
 
-    @BeforeTest
+    @BeforeClass
     public void setup() {
 
         System.setProperty("webdriver.chrome.driver", driverPath);
@@ -28,42 +26,39 @@ public class CheckInputsAtOnce {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
         registerPage = new RegisterPage(driver);
-        driver.get(registerPage.registerUrl);
+        driver.get(registerPage.getRegisterUrl());
         driver.manage().window().maximize();
+        screenshot = new Screenshot(driver);
     }
 
 
     @Test(dataProvider = "userData", dataProviderClass = DataExtractor.class) // TODO
     public void checkInputsAtOnce(String id,String login, String email, String password, String passwordConfirm, String firstName, String lastName, String ircNick, String searchValue) throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
 
-
-            registerPage.typeDataToInput(registerPage.userInput, login);
-            registerPage.typeDataToInput(registerPage.userEmailInput, email);
+            registerPage.setUserInput(login);
+            registerPage.setUserEmailInput(email);
             registerPage.clickUserPasswordInput();
-            registerPage.typeDataToInput(registerPage.userPasswordInput, password);
+            registerPage.setUserPasswordInput(password);
             registerPage.clickUserPasswordConfirmationInput();
-            registerPage.typeDataToInput(registerPage.userPasswordConfirmationInput, passwordConfirm);
-            registerPage.typeDataToInput(registerPage.userFirstNameInput, firstName);
-            registerPage.typeDataToInput(registerPage.userLastNameInput, lastName);
-            registerPage.typeDataToInput(registerPage.userIrcNickInput, ircNick);
-            registerPage.typeDataToInput(registerPage.searchInput, searchValue);
+            registerPage.setUserPasswordConfirmationInput(passwordConfirm);
+            registerPage.setUserFirstNameInput(firstName);
+            registerPage.setUserLastNameInput(lastName);
+            registerPage.setUserIrcNickInput(ircNick);
+            registerPage.setSearchInput(searchValue);
             registerPage.clickSubmitFormInput();
+            screenshot.doScreenshot(driver, "checkInputsAtOnce" + id);
 
             // check inputs (compare error message with label text)
-            if (registerPage.getErrorExplanationText() != "") {
-                registerPage.checkForExistErrorMsg(registerPage.userLabel);
-                registerPage.checkForExistErrorMsg(registerPage.userEmailLabel);
-                registerPage.checkForExistErrorMsg(registerPage.userPasswordLabel);
-                registerPage.checkForExistErrorMsg(registerPage.userPasswordConfirmationLabel);
-                registerPage.checkForExistErrorMsg(registerPage.userFirstNameLabel);
-                registerPage.checkForExistErrorMsg(registerPage.userLastNameLabel);
-                registerPage.checkForExistErrorMsg(registerPage.userIrcNickLabel);
-            }
-            screenshot.doScreenshot(driver, "checkInputsAtOnce" + id);
-            registerPage.softassert.assertAll();
+            if (registerPage.isElementExistById(registerPage.getErrorExplanationIdValue())) {
 
+                Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getUserErrorPath()),"User error is displayed");
+                Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getEmailErrorPath()),"Email error is displayed");
+                Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getPasswordErrorPath()),"Password error is displayed");
+                Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getPasswordConfirmErrorPath()),"Password confirmation error is displayed");
+                Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getFirstNameErrorPath()),"Firstname error is displayed");
+                Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getLastNameErrorPath()),"Lastname error is displayed");
+
+            }
 
     }
 

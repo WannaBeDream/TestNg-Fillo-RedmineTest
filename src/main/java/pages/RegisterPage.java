@@ -3,7 +3,7 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.asserts.SoftAssert;
+import org.testng.Assert;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,119 +12,321 @@ import java.util.List;
 
 public class RegisterPage {
     @FindBy(xpath = "//a[@class=\"home\"]")
-    public WebElement homeLink;
-    @FindBy(xpath = "//a[@class=\"projects\"]")
-    public WebElement projectsLink;
-    @FindBy(xpath = "//a[@class=\"help\"]")
-    public WebElement helpLink;
-    @FindBy(xpath = "//a[@class=\"login\"]")
-    public WebElement loginLink;
-    @FindBy(xpath = "//a[@href='http://www.redmine.org/']")
-    public WebElement redmineLink;
-    @FindBy(id = "user_login")
-    public WebElement userInput;
+    private WebElement homeLink;
     @FindBy(id = "user_firstname")
-    public WebElement userFirstNameInput;
+    private WebElement userFirstNameInput;
     @FindBy(id = "user_lastname")
-    public WebElement userLastNameInput;
+    private WebElement userLastNameInput;
     @FindBy(id = "user_mail")
-    public WebElement userEmailInput;
+    private WebElement userEmailInput;
     @FindBy(id = "user_password")
-    public WebElement userPasswordInput;
+    private WebElement userPasswordInput;
     @FindBy(id = "user_password_confirmation")
-    public WebElement userPasswordConfirmationInput;
+    private WebElement userPasswordConfirmationInput;
     @FindBy(id = "user_custom_field_values_3")
-    public WebElement userIrcNickInput;
+    private WebElement userIrcNickInput;
     @FindBy(xpath = "//label[@for=\"user_login\"]")
-    public WebElement userLabel;
+    private WebElement userLabel;
     @FindBy(xpath = "//label[@for=\"user_password\"]")
-    public WebElement userPasswordLabel;
+    private WebElement userPasswordLabel;
     @FindBy(xpath = "//label[@for=\"user_password_confirmation\"]")
-    public WebElement userPasswordConfirmationLabel;
+    private WebElement userPasswordConfirmationLabel;
     @FindBy(xpath = "//label[@for=\"user_firstname\"]")
-    public WebElement userFirstNameLabel;
+    private WebElement userFirstNameLabel;
     @FindBy(xpath = "//label[@for=\"user_lastname\"]")
-    public WebElement userLastNameLabel;
+    private WebElement userLastNameLabel;
     @FindBy(xpath = "//label[@for=\"user_mail\"]")
-    public WebElement userEmailLabel;
+    private WebElement userEmailLabel;
     @FindBy(xpath = "//label[@for=\"user_custom_field_values_3\"]/span")
-    public WebElement userIrcNickLabel;
+    private WebElement userIrcNickLabel;
     @FindBy(xpath = "//input[@type=\"submit\"]")
-    public WebElement submitFormInput;
+    private WebElement submitFormInput;
     @FindBy(id = "q")
-    public WebElement searchInput;
+    private WebElement searchInput;
     @FindBy(xpath = "//input[@id='search-input']")
-    public WebElement searchInputAfterQuery;
+    private WebElement searchInputAfterQuery;
     @FindBy(xpath = "//a[@class='register']")
-    public WebElement registerLink;
+    private WebElement registerLink;
     @FindBy(xpath = "//a[@href=\"/search\"]")
-    public WebElement searchLink; // +
+    private WebElement searchLink; // +
     @FindBy(id = "errorExplanation")
-    public WebElement errorExplanation;
+    private WebElement errorExplanation;
     @FindBy(id = "flash_notice")
-    public String flashNotice;  // +
+    private String flashNotice;  // +
     @FindBy(xpath = "//*[@id='errorExplanation']/ul/li")
-    public List<WebElement> listLiSelector;
-    public WebDriver driver;
-    public final String registerUrl = "https://www.redmine.org/account/register";
-    public final String baseUrl = "https://www.redmine.org";
-    public String liText;
-    public String searchValueForCheck = "React";
-    public SoftAssert softassert;
+    private List<WebElement> listLiSelector;
+    @FindBy(xpath = "//a[@class=\"projects\"]")
+    private WebElement projectsLink;
+    @FindBy(xpath = "//a[@class=\"help\"]")
+    private WebElement helpLink;
+    @FindBy(xpath = "//a[@class=\"login\"]")
+    private WebElement loginLink;
+    @FindBy(xpath = "//a[@href='http://www.redmine.org/']")
+    private WebElement redmineLink;
+    @FindBy(id = "user_login")
+    private WebElement userInput;
+    private final String userErrorPath = "//*[@id='errorExplanation']//li[contains(text(),'Пользователь')]";
+    private final String emailErrorPath = "//*[@id='errorExplanation']//li[contains(text(),'Email')]";
+    private final String passwordErrorPath ="//*[@id='errorExplanation']//li[contains(text(),'Пароль')]";
+    private final String passwordConfirmErrorPath = "//*[@id='errorExplanation']//li[contains(text(),'подтверждение')]";
+    private final String firstNameErrorPath = "//*[@id='errorExplanation']//li[contains(text(),'Имя')]";
+    private final String lastNameErrorPath ="//*[@id='errorExplanation']//li[contains(text(),'Фамилия')]";
+    private WebDriver driver;
+    private final String registerUrl = "https://www.redmine.org/account/register";
+    private final String baseUrl = "https://www.redmine.org";
+    private String liText;
+    private String searchValueForCheck = "React";
 
-    public RegisterPage(WebDriver driver) {
+    public String getUserErrorPath() {
+        return userErrorPath;
+    }
 
+    public String getEmailErrorPath() {
+        return emailErrorPath;
+    }
+
+    public String getPasswordErrorPath() {
+        return passwordErrorPath;
+    }
+
+    public String getPasswordConfirmErrorPath() {
+        return passwordConfirmErrorPath;
+    }
+
+    public String getFirstNameErrorPath() {
+        return firstNameErrorPath;
+    }
+
+    public String getLastNameErrorPath() {
+        return lastNameErrorPath;
+    }
+
+    public WebElement getHomeLink() {
+        return homeLink;
+    }
+
+    public WebElement getProjectsLink() {
+        return projectsLink;
+    }
+
+    public WebElement getHelpLink() {
+        return helpLink;
+    }
+
+
+    public WebElement getLoginLink() {
+        return loginLink;
+    }
+
+
+    public WebElement getRedmineLink() {
+        return redmineLink;
+    }
+
+    public WebElement getUserInput() {
+        return userInput;
+    }
+
+    public WebElement getUserFirstNameInput() {
+        return userFirstNameInput;
+    }
+
+    public WebElement getUserLastNameInput() {
+        return userLastNameInput;
+    }
+
+    public WebElement getUserEmailInput() {
+        return userEmailInput;
+    }
+
+    public WebElement getUserPasswordInput() {
+        return userPasswordInput;
+    }
+
+    public WebElement getUserPasswordConfirmationInput() {
+        return userPasswordConfirmationInput;
+    }
+
+    public WebElement getUserIrcNickInput() {
+        return userIrcNickInput;
+    }
+
+    public WebElement getUserLabel() {
+        return userLabel;
+    }
+
+    public WebElement getUserPasswordLabel() {
+        return userPasswordLabel;
+    }
+
+    public WebElement getUserPasswordConfirmationLabel() {
+        return userPasswordConfirmationLabel;
+    }
+
+    public WebElement getUserFirstNameLabel() {
+        return userFirstNameLabel;
+    }
+
+    public WebElement getUserLastNameLabel() {
+        return userLastNameLabel;
+    }
+
+    public WebElement getUserEmailLabel() {
+        return userEmailLabel;
+    }
+
+    public WebElement getUserIrcNickLabel() {
+        return userIrcNickLabel;
+    }
+
+    public WebElement getSearchInput() {
+        return searchInput;
+    }
+
+    public WebElement getSearchInputAfterQuery() {
+        return searchInputAfterQuery;
+    }
+
+
+    public WebElement getRegisterLink() {
+        return registerLink;
+    }
+
+
+    public WebElement getSearchLink() {
+        return searchLink;
+    }
+
+    public WebElement getErrorExplanation() {
+        return errorExplanation;
+    }
+    public String getErrorExplanationIdValue() {
+        return errorExplanation.getAttribute("id");
+    }
+    public boolean isElementExistById(String idValue) {
+        try {
+            driver.findElement(By.id(idValue));
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public boolean isErrorLiExistByPath(String path) {
+        try {
+            driver.findElement(By.xpath(path));
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public List<WebElement> getListLiSelector() {
+        return listLiSelector;
+    }
+
+    public WebDriver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(WebDriver driver) {
         this.driver = driver;
-        PageFactory.initElements(driver, this);
-        softassert = new SoftAssert();
+    }
+
+    public String getRegisterUrl() {
+        return registerUrl;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public String getLiText() {
+        return liText;
+    }
+
+    public void setLiText(String liText) {
+        this.liText = liText;
+    }
+
+    public String getSearchValueForCheck() {
+        return searchValueForCheck;
     }
 
 
-    public void typeAndSendInput(WebElement targetInput, String text) throws Exception {
-        targetInput.sendKeys(text, Keys.ENTER);
-
-        Thread.sleep(500);
+    public void setUserFirstNameInput(String value) {
+        userFirstNameInput.sendKeys(value);
     }
 
-    public void typeDataToInput(WebElement targetInput, String text) throws Exception {
-        targetInput.sendKeys(text);
-
-        Thread.sleep(500);
+    public void setUserLastNameInput(String value) {
+        userLastNameInput.sendKeys(value);
     }
 
-    public String compareLabelAndInput(WebElement label) {
-        if (label.getAttribute("class") == "") {
-            return "passed";
-        } else {
-            softassert.assertEquals(label.getAttribute("class"),"");
-            return "failed";
-        }
+    public void setUserEmailInput(String value) {
+        userEmailInput.sendKeys(value);
     }
 
-    public void checkForExistErrorMsg(WebElement targetLabel) throws InterruptedException {
-        if (listLiSelector.size() != 0) {
-            Iterator<WebElement> it = this.listLiSelector.iterator();
-
-            while (it.hasNext()) {
-                this.liText = it.next().getText().replaceAll("[*]", "");
-                if (this.liText.startsWith(targetLabel.getText().replaceAll("[*]", "")) || this.liText.contains("Пароль не совпадает с подтверждением")) {
-                    softassert.assertEquals(this.liText, "");
-                    continue;
-                }
-            }
-        }
-        Thread.sleep(500);
+    public void setUserPasswordInput(String value) {
+        userPasswordInput.sendKeys(value);
     }
 
-
-
-    public void compareCurrentUrlWithBaseUrl(){
-        softassert.assertTrue(driver.getCurrentUrl().startsWith(baseUrl));
-    }
-    public void checkForBreakPage() {
-        softassert.assertTrue(checkInternetConnection(driver.getCurrentUrl()));
+    public void setUserPasswordConfirmationInput(String value) {
+        userPasswordConfirmationInput.sendKeys(value);
     }
 
+    public void setUserIrcNickInput(String value) {
+        userIrcNickInput.sendKeys(value);
+    }
+
+    public void setSearchInput(String value) {
+        searchInput.sendKeys(value);
+    }
+
+    public void setUserInput(String value) {
+        userInput.sendKeys(value);
+    }
+    public String getSearchInputAfterQueryText() {
+        return searchInputAfterQuery.getText();
+    }
+    public String getSearchInputValue() {
+        return searchInput.getAttribute("value");
+    }
+    public String getErrorExplanationText() {
+        return  errorExplanation.getText();
+    }
+    public void clickSubmitFormInput() {
+        submitFormInput.click();
+    }
+    public void clickSearchLink() {
+        searchLink.click();
+    }
+    public  void clickUserPasswordConfirmationInput() {
+        userPasswordConfirmationInput.click();
+    }
+    public  void clickUserPasswordInput() {
+        userPasswordInput.click();
+    }
+    public String getUserLabelText() {
+        return userLabel.getText();
+    }
+    public String getUserPasswordLabelText() {
+        return userPasswordLabel.getText();
+    }
+    public String getUserPasswordConfirmationLabelText() {
+        return userPasswordConfirmationLabel.getText();
+    }
+    public String getFirstNameLabelText() {
+        return userFirstNameLabel.getText();
+    }
+    public String getLastNameLabelText() {
+        return userLastNameLabel.getText();
+    }
+    public String getEmailLabelText() {
+        return userEmailLabel.getText();
+    }
+    public String getIrcNickLabelText() {
+        return userIrcNickLabel.getText();
+    }
     public void clickHomeLink () {
         homeLink.click();
     }
@@ -143,6 +345,48 @@ public class RegisterPage {
     public void clickRedmineLink () {
         redmineLink.click();
     }
+
+
+    public RegisterPage(WebDriver driver) {
+
+        this.setDriver(driver);
+        PageFactory.initElements(driver, this);
+    }
+
+
+    public String compareLabelAndInput(WebElement label) {
+        if (label.getAttribute("class") == "") {
+            return "passed";
+        } else {
+            Assert.assertTrue(label.getAttribute("class").contains(""),"Label doesn't contain empty value, means error exist");
+            return "failed";
+        }
+    }
+
+    public void checkForExistErrorMsg(WebElement targetLabel) throws InterruptedException {
+        if (listLiSelector.size() != 0) {
+            Iterator<WebElement> it = this.listLiSelector.iterator();
+
+            while (it.hasNext()) {
+                this.liText = it.next().getText().replaceAll("[*]", "");
+                if (this.liText.startsWith(targetLabel.getText().replaceAll("[*]", "")) || this.liText.contains("Пароль не совпадает с подтверждением")) {
+                    Assert.assertEquals(this.liText, "");
+                    continue;
+                }
+            }
+        }
+        Thread.sleep(500);
+    }
+
+
+
+    public void compareCurrentUrlWithBaseUrl(){
+        Assert.assertTrue(driver.getCurrentUrl().startsWith(baseUrl));
+    }
+    public void checkForBreakPage() {
+        Assert.assertTrue(checkInternetConnection(driver.getCurrentUrl()));
+    }
+
 
 
     private static boolean checkInternetConnection(String url) {
@@ -167,44 +411,5 @@ public class RegisterPage {
     }
 
 
-    public String getUserLabelText() {
-        return userLabel.getText();
-    }
-    public String getUserPasswordLabelText() {
-        return userPasswordLabel.getText();
-    }
-    public String getUserPasswordConfirmationLabelText() {
-        return userPasswordConfirmationLabel.getText();
-    }
-    public String getFirstNameLabelText() {
-        return userFirstNameLabel.getText();
-    }
-    public String getLastNameLabelText() {
-        return userLastNameLabel.getText();
-    }
-    public String getEmailLabelText() {
-        return userEmailLabel.getText();
-    }
-    public String getIrcNickLabelText() {
-        return userIrcNickLabel.getText();
-    }
-    public String getSearchInputAfterQueryText() {
-        return searchInputAfterQuery.getText();
-    }
-    public String getSearchInputValue() {
-        return searchInput.getAttribute("value");
-    }
-    public String getErrorExplanationText() {
-        return  errorExplanation.getText();
-    }
-    public void clickSubmitFormInput() {
-        submitFormInput.click();
-    }
-    public  void clickUserPasswordConfirmationInput() {
-        userPasswordConfirmationInput.click();
-    }
-    public  void clickUserPasswordInput() {
-        userPasswordInput.click();
-    }
 
 }

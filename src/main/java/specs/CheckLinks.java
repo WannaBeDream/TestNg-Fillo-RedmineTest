@@ -13,70 +13,63 @@ public class CheckLinks {
     WebDriver driver;
     RegisterPage registerPage;
 
-    @BeforeTest
+    @BeforeClass()
     public void setup() {
-
         System.setProperty("webdriver.chrome.driver", driverPath);
 
         driver = new ChromeDriver();
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
         registerPage = new RegisterPage(driver);
-        driver.get(registerPage.registerUrl);
+        driver.get(registerPage.getRegisterUrl());
         driver.manage().window().maximize();
+
     }
 
     @Test
     public void checkHomeLink() {
-        registerPage = new RegisterPage(driver);
         registerPage.clickHomeLink();
         registerPage.compareCurrentUrlWithBaseUrl();
         registerPage.checkForBreakPage();
-        registerPage.softassert.assertAll();
     }
     @Test
     public void checkProjectsLink() {
-        registerPage = new RegisterPage(driver);
         registerPage.clickProjectsLink();
         registerPage.compareCurrentUrlWithBaseUrl();
         registerPage.checkForBreakPage();
-        registerPage.softassert.assertAll();
     }
     @Test
     public void checkHelpLink() {
-        registerPage = new RegisterPage(driver);
         registerPage.clickHelpLink();
         registerPage.compareCurrentUrlWithBaseUrl();
         registerPage.checkForBreakPage();
-        registerPage.softassert.assertAll();
     }
     @Test
     public void checkLoginLink() {
-        registerPage = new RegisterPage(driver);
         registerPage.clickLoginLink();
         registerPage.compareCurrentUrlWithBaseUrl();
         registerPage.checkForBreakPage();
-        registerPage.softassert.assertAll();
     }
     @Test
     public void checkRegisterLink() {
-        registerPage = new RegisterPage(driver);
         registerPage.clickRegisterLink();
         registerPage.compareCurrentUrlWithBaseUrl();
         registerPage.checkForBreakPage();
-        registerPage.softassert.assertAll();
     }
     @Test
     public void checkRedmineLink() {
-        registerPage = new RegisterPage(driver);
         registerPage.clickRedmineLink();
         registerPage.compareCurrentUrlWithBaseUrl();
         registerPage.checkForBreakPage();
-        registerPage.softassert.assertAll();
+    }
+
+    @AfterMethod
+    public void afterMethod() {
+        driver.navigate().back();
     }
 
 
-    @AfterTest
+    @AfterClass
     public void afterTest() {
         driver.quit();
     }

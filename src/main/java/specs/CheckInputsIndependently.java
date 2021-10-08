@@ -4,9 +4,7 @@ import helpers.Screenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.RegisterPage;
 
 import java.io.File;
@@ -18,7 +16,7 @@ public class CheckInputsIndependently  {
     RegisterPage registerPage;
     Screenshot screenshot;
 
-    @BeforeTest
+    @BeforeClass
     public void setup() {
 
         System.setProperty("webdriver.chrome.driver", driverPath);
@@ -27,95 +25,78 @@ public class CheckInputsIndependently  {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
         registerPage = new RegisterPage(driver);
-        driver.get(registerPage.registerUrl);
+        driver.get(registerPage.getRegisterUrl());
         driver.manage().window().maximize();
+        screenshot = new Screenshot(driver);
     }
 
     @Test
     public void checkUserInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-
-        registerPage.typeAndSendInput(registerPage.userInput,"w");
-        registerPage.compareLabelAndInput(registerPage.userLabel);
-        registerPage.checkForExistErrorMsg(registerPage.userLabel);
+        registerPage.setUserInput("Vasya123128");
+        registerPage.clickSubmitFormInput();
         screenshot.doScreenshot(driver,"userInput");
-        registerPage.softassert.assertAll();
-        registerPage.userInput.clear();
+        registerPage.compareLabelAndInput(registerPage.getUserLabel());
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getUserErrorPath()),"User error is displayed");
     }
     @Test
     public void checkUserEmailInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-
-        registerPage.typeAndSendInput(registerPage.userEmailInput,"w");
-        registerPage.compareLabelAndInput(registerPage.userEmailLabel);
-        registerPage.checkForExistErrorMsg(registerPage.userEmailLabel);
+        registerPage.setUserEmailInput("Vasya123128@gmail.com");
+        registerPage.clickSubmitFormInput();
         screenshot.doScreenshot(driver,"userEmailInput");
-        registerPage.softassert.assertAll();
-        registerPage.userEmailInput.clear();
+        registerPage.compareLabelAndInput(registerPage.getUserEmailLabel());
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getEmailErrorPath()),"Email error is displayed");
     }
     @Test
     public void checkUserPasswordInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-
-        registerPage.typeAndSendInput(registerPage.userPasswordInput,"w");
-        registerPage.compareLabelAndInput(registerPage.userPasswordLabel);
-        registerPage.checkForExistErrorMsg(registerPage.userPasswordLabel);
+        registerPage.setUserPasswordInput("wdwe3232");
+        registerPage.clickSubmitFormInput();
         screenshot.doScreenshot(driver,"userPasswordInput");
-        registerPage.softassert.assertAll();
-        registerPage.userPasswordInput.clear();
+        registerPage.compareLabelAndInput(registerPage.getUserPasswordLabel());
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getPasswordErrorPath()),"Password error is displayed");
     }
     @Test
     public void checkUserPasswordConfirmationInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-
-        registerPage.typeAndSendInput(registerPage.userPasswordConfirmationInput,"w");
-        registerPage.compareLabelAndInput(registerPage.userPasswordConfirmationLabel);
-        registerPage.checkForExistErrorMsg(registerPage.userPasswordConfirmationLabel);
-        screenshot.doScreenshot(driver,"userPasswordConfirmationLabel");
-        registerPage.softassert.assertAll();
-        registerPage.userPasswordConfirmationInput.clear();
+        registerPage.setUserPasswordConfirmationInput("wdwe3232");
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userPasswordConfirmationInput");
+        registerPage.compareLabelAndInput(registerPage.getUserPasswordConfirmationLabel());
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getPasswordConfirmErrorPath()),"Password confirmation error is displayed");
     }
     @Test
     public void checkUserFirstNameInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
-
-        registerPage.typeAndSendInput(registerPage.userFirstNameInput,"w");
-        registerPage.compareLabelAndInput(registerPage.userFirstNameLabel);
-        registerPage.checkForExistErrorMsg(registerPage.userFirstNameLabel);
+        registerPage.setUserFirstNameInput("wsdcsdfd");
+        registerPage.clickSubmitFormInput();
         screenshot.doScreenshot(driver,"userFirstNameInput");
-        registerPage.softassert.assertAll();
-        registerPage.userFirstNameInput.clear();
+        registerPage.compareLabelAndInput(registerPage.getUserFirstNameLabel());
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getFirstNameErrorPath()),"Firstname error is displayed");
     }
     @Test
     public void checkUserLastNameInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
 
-        registerPage.typeAndSendInput(registerPage.userLastNameInput,"w");
-        registerPage.compareLabelAndInput(registerPage.userLastNameLabel);
-        registerPage.checkForExistErrorMsg(registerPage.userLastNameLabel);
-        screenshot.doScreenshot(driver,"userLastNameLabel");
-        registerPage.softassert.assertAll();
-        registerPage.userLastNameInput.clear();
+
+        registerPage.setUserLastNameInput("wsdfdsf");
+        registerPage.clickSubmitFormInput();
+        screenshot.doScreenshot(driver,"userLastNameInput");
+        registerPage.compareLabelAndInput(registerPage.getUserLastNameLabel());
+        Assert.assertFalse(registerPage.isErrorLiExistByPath(registerPage.getLastNameErrorPath()),"Lastname error is displayed");;
     }
-    @Test
+    @Test(dependsOnMethods={"checkUserPasswordInput"}, alwaysRun = true)
     public void checkSearchInput() throws Exception {
-        registerPage = new RegisterPage(driver);
-        screenshot = new Screenshot(driver);
 
-        registerPage.typeAndSendInput(registerPage.searchInput,registerPage.searchValueForCheck);
-        Assert.assertTrue(driver.getCurrentUrl().contains(registerPage.searchValueForCheck));
+
+        registerPage.setSearchInput(registerPage.getSearchValueForCheck());
+        registerPage.clickSearchLink();
         screenshot.doScreenshot(driver,"searchInput");
-        registerPage.softassert.assertAll();
-        driver.navigate().back();
+        Assert.assertTrue(driver.getCurrentUrl().contains(registerPage.getSearchValueForCheck()),"Current url doesn't contain searched value");
     }
 
-    @AfterTest
+    @AfterMethod
+    public void afterMethod() {
+        registerPage.clickRegisterLink();
+    }
+
+
+    @AfterClass
     public void afterTest() {
         driver.quit();
     }

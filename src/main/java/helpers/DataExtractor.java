@@ -46,7 +46,7 @@ public class DataExtractor {
         try {
             Fillo fillo = new Fillo();
             Connection connection = fillo.getConnection(xPath);
-            connection.createTable("Result", new String[]{"name", "isPassed"});
+            connection.createTable("Result", new String[]{"inputName", "isPassed"});
             connection.close();
         } catch (FilloException e) {
             e.printStackTrace();

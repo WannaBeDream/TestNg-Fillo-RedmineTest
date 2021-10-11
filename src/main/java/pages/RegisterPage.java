@@ -243,16 +243,22 @@ public class RegisterPage {
 
 
     public String getErrorExplanationIdValue() {
-        return errorExplanation.getAttribute("id");
+        if (driver.findElements(By.tagName("form ul")).size() != 0) {
+            return errorExplanation.getAttribute("id");
+        }
+        return null;
     }
 
     public boolean isElementExistById(String idValue) {
+        if (idValue == null) return false;
         try {
             driver.findElement(By.id(idValue));
             return true;
+
         } catch (NoSuchElementException e) {
             return false;
         }
+
     }
 
     public boolean isErrorLiExistByPath(String path) {

@@ -57,7 +57,7 @@ public class DataExtractor {
 
     public void insertResult(String name, String isPassed) {
 
-        String query = "INSERT INTO Result(name,isPassed) VALUES('" + name + "','" + isPassed + "')";
+        String query = "INSERT INTO Result(inputName,isPassed) VALUES('" + name + "','" + isPassed + "')";
         System.out.println(">>>>> " + query);
         try {
 

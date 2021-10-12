@@ -3,12 +3,10 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
+
+import static org.testng.Assert.assertTrue;
 
 public class RegisterPage {
     @FindBy(xpath = "//a[@class=\"home\"]")
@@ -74,8 +72,7 @@ public class RegisterPage {
     private WebDriver driver;
     private final String registerUrl = "https://www.redmine.org/account/register";
     private final String baseUrl = "https://www.redmine.org";
-    private String liText;
-    private String searchValueForCheck = "React";
+    private final String searchValueForCheck = "React";
 
     public String getUserErrorPath() {
         return userErrorPath;
@@ -217,6 +214,34 @@ public class RegisterPage {
         return userIrcNickLabel.getText();
     }
 
+    public String getUserLabelClassText() {
+        return getUserLabel().getAttribute("class");
+    }
+
+    public String getUserPasswordLabelClassText() {
+        return getUserPasswordLabel().getAttribute("class");
+    }
+
+    public String getUserPasswordConfirmationLabelClassText() {
+        return getUserPasswordConfirmationLabel().getAttribute("class");
+    }
+
+    public String getFirstNameLabelClassText() {
+        return getUserFirstNameLabel().getAttribute("class");
+    }
+
+    public String getLastNameLabelClassText() {
+        return getUserLastNameLabel().getAttribute("class");
+    }
+
+    public String getEmailLabelClassText() {
+        return getUserEmailLabel().getAttribute("class");
+    }
+
+    public String getIrcNickLabelClassText() {
+        return getUserIrcNickLabel().getAttribute("class");
+    }
+
     public void clickHomeLink() {
         homeLink.click();
     }
@@ -242,32 +267,11 @@ public class RegisterPage {
     }
 
 
-    public String getErrorExplanationIdValue() {
-        if (driver.findElements(By.tagName("form ul")).size() != 0) {
-            return errorExplanation.getAttribute("id");
+    public boolean isErrorLiDisplayedByPath(String path) {
+        if (driver.findElements(By.xpath(path)).size() != 0) {
+            return driver.findElement(By.xpath(path)).isDisplayed();
         }
-        return null;
-    }
-
-    public boolean isElementExistById(String idValue) {
-        if (idValue == null) return false;
-        try {
-            driver.findElement(By.id(idValue));
-            return true;
-
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-
-    }
-
-    public boolean isErrorLiExistByPath(String path) {
-        try {
-            driver.findElement(By.xpath(path));
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+        return false;
     }
 
     public RegisterPage(WebDriver driver) {
@@ -276,43 +280,16 @@ public class RegisterPage {
     }
 
 
-    public String compareLabelAndInput(WebElement label) {
-        if (label.getAttribute("class") == "") {
-            return "passed";
+    public String compareLabelAndInput(String classValue) {
+        if (classValue == "") {
+            return "passed"; // true?
         } else {
-            Assert.assertTrue(label.getAttribute("class").contains(""), "Label doesn't contain empty value, means error exist");
-            return "failed";
+            assertTrue(classValue.contains(""), "Label doesn't contain empty value, means error exist");
+            return "failed"; // false?
         }
     }
 
     public void compareCurrentUrlWithBaseUrl() {
-        Assert.assertTrue(driver.getCurrentUrl().startsWith(baseUrl));
+        assertTrue(driver.getCurrentUrl().startsWith(baseUrl));
     }
-
-    public void checkForBreakPage() {
-        Assert.assertTrue(checkInternetConnection(driver.getCurrentUrl()));
-    }
-
-    private static boolean checkInternetConnection(String url) {
-        Boolean result = false;
-        HttpURLConnection con = null;
-        try {
-            con = (HttpURLConnection) new URL(url).openConnection();
-            con.setRequestMethod("HEAD");
-            result = (con.getResponseCode() == HttpURLConnection.HTTP_OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (con != null) {
-                try {
-                    con.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return result;
-    }
-
-
 }

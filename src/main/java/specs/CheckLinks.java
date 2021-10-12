@@ -30,37 +30,31 @@ public class CheckLinks {
     public void checkHomeLink() {
         registerPage.clickHomeLink();
         registerPage.compareCurrentUrlWithBaseUrl();
-        registerPage.checkForBreakPage();
     }
     @Test
     public void checkProjectsLink() {
         registerPage.clickProjectsLink();
         registerPage.compareCurrentUrlWithBaseUrl();
-        registerPage.checkForBreakPage();
     }
     @Test
     public void checkHelpLink() {
         registerPage.clickHelpLink();
         registerPage.compareCurrentUrlWithBaseUrl();
-        registerPage.checkForBreakPage();
     }
     @Test
     public void checkLoginLink() {
         registerPage.clickLoginLink();
         registerPage.compareCurrentUrlWithBaseUrl();
-        registerPage.checkForBreakPage();
     }
     @Test
     public void checkRegisterLink() {
         registerPage.clickRegisterLink();
         registerPage.compareCurrentUrlWithBaseUrl();
-        registerPage.checkForBreakPage();
     }
     @Test
     public void checkRedmineLink() {
         registerPage.clickRedmineLink();
         registerPage.compareCurrentUrlWithBaseUrl();
-        registerPage.checkForBreakPage();
     }
 
     @AfterMethod
